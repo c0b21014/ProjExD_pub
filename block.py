@@ -1,7 +1,7 @@
 import pygame as pg 
 import sys
 
-TITLE = "世界で一番つまらんブロック崩し"
+TITLE = "ブロック崩し"
 BLOCK_NUM_XY = (4,8)
 SCREEN_SIZE = (900,600)
 BACKGROUND_IMAGE = 'fig/utyuu.jpg'
