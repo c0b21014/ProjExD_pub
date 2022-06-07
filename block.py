@@ -9,6 +9,12 @@ BALL_R = 20
 BALL_COLOR = (255, 0, 0)
 BALL_V0 = (0.0, 2.0)
 
+""" BGM設定のクラス """ #[迫]
+class Bgm:
+    def __init__(self, fn):     # fn:BGMファイルのパス
+        pg.mixer.music.load(fn) # 音楽ファイルの読み込み
+        pg.mixer.music.play(1)  # 音楽の再生回数(1回)   
+
 """ ウィンドウ作成のクラス """
 class Screen:
 
@@ -151,6 +157,8 @@ def collition(ball, block):
 
 """ メインプログラム """
 def main():
+    # BGM設定 [迫]
+    bgm = Bgm("music/旧支配者のキャロル_loop.mp3")                              
     #スクリーン・ブロック・棒・ボールを作成
     screen = Screen(BACKGROUND_IMAGE, SCREEN_SIZE, TITLE)
     bar = Bar(screen.width, screen.height)
@@ -172,7 +180,7 @@ def main():
 
         # ゲームオーバー
         if ball.rect.bottom >= screen.rect.bottom:                             #ボールが画面下に到達したら
-            font = pg.font.Font(None, 100)                                      # フォントの設定
+            font = pg.font.Font(None, 100)                                     # フォントの設定
             text = font.render("GAME OVER", True, (255,255,255))               # 文字のsurfaceの作成(文字列、色指定)
             screen.surface.blit(text, [screen.width//2-200,screen.height//2-30])  # 画面用surfaceに文字のsurfaceを貼り付ける
             pg.display.update()                                                # 画面の更新
