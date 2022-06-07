@@ -2,18 +2,19 @@ import pygame as pg
 import sys
 
 TITLE = "ブロック崩し"
-BLOCK_NUM_XY = (4,8)
+BLOCK_NUM_XY = (5,10)
 SCREEN_SIZE = (900,600)
 BACKGROUND_IMAGE = 'fig/utyuu.jpg'
 BALL_R = 20
 BALL_COLOR = (255, 0, 0)
-BALL_V0 = (0.0, 2.0)
+BALL_V0 = (0.0, 1.0)
 
 """ BGM設定のクラス """ #[迫]
 class Bgm:
     def __init__(self, fn):     # fn:BGMファイルのパス
         pg.mixer.music.load(fn) # 音楽ファイルの読み込み
         pg.mixer.music.play(1)  # 音楽の再生回数(1回)
+
 
 """ ウィンドウ作成のクラス """
 class Screen:
