@@ -54,7 +54,7 @@ class Bar():
         key_states = pg.key.get_pressed()             # keyの情報の辞書を作成(keyが押されているとき値がTrue)
         #辞書を利用した棒移動[黒杉]
         for key, delta in Bar.key_delta.items():
-            if key_states[key] == True:
+            if key_states[key]:
                 self.rect.centerx += delta[0]
         screen.surface.blit(self.surface, self.rect)  # 画面用surfaceに棒のsurfaceを貼り付ける
 
@@ -127,7 +127,7 @@ def check_ball_screen(ball, screen):
 def check_ball_bar(ball, bar):
     reflection = (1, 1)                              # 初期値 運動方向の反転無し
     if ball.rect.bottom < bar.rect.centery and\
-         ball.rect.colliderect(bar.rect) == True:    # ボールがバーより低い and 衝突していたら
+         ball.rect.colliderect(bar.rect):    # ボールがバーより低い and 衝突していたら
         reflection = (1,-1)                          # 運動方向の変更はy方向のみ
         if bar.rect.centerx < ball.rect.centerx < bar.rect.right:
             ball.vx += 1
@@ -149,7 +149,7 @@ def check_ball_block(ball, block):
             # block_rect      　=    rect(yx)
             try :
                 # block_rectが「0」の場合がありrect型ではないため、その時にTypeErrorが発生する
-                if ball.rect.colliderect(block_rect) == True :  # ボールとあるブロックが衝突していたら
+                if ball.rect.colliderect(block_rect):  # ボールとあるブロックが衝突していたら
                     block.list[y][x] = 0                        # そのブロックに対応するblock.listの値を0に変更
                     block.rect_list[y][x] = 0                   # そのブロックのrectの情報をblock.rect_listから消す
                     reflection = (-1,-1)                        # 運動方向を反転させる
