@@ -13,7 +13,7 @@ BALL_V0 = (0.0, 2.0)
 class Bgm:
     def __init__(self, fn):     # fn:BGMファイルのパス
         pg.mixer.music.load(fn) # 音楽ファイルの読み込み
-        pg.mixer.music.play(1)  # 音楽の再生回数(1回)   
+        pg.mixer.music.play(1)  # 音楽の再生回数(1回)
 
 """ ウィンドウ作成のクラス """
 class Screen:
@@ -35,7 +35,7 @@ class Screen:
 """ 棒作成のクラス """
 class Bar():
        #棒の左右移動用辞書[黒杉]
-    key_delta = {pg.K_LEFT : [-1, 0],
+    KEY＿DELTA = {pg.K_LEFT : [-1, 0],
                  pg.K_RIGHT: [+1, 0],
                 }
 
@@ -53,8 +53,8 @@ class Bar():
         # screen：Screenクラスのオブジェクト
         key_states = pg.key.get_pressed()             # keyの情報の辞書を作成(keyが押されているとき値がTrue)
         #辞書を利用した棒移動[黒杉]
-        for key, delta in Bar.key_delta.items():
-            if key_states[key] == True:
+        for key, delta in Bar.KEY_DELTA.items():
+            if key_states[key] :
                 self.rect.centerx += delta[0]
                 self.rect.centery += delta[1]
         screen.surface.blit(self.surface, self.rect)  # 画面用surfaceに棒のsurfaceを貼り付ける
@@ -119,8 +119,8 @@ def check_ball_screen(ball, screen):
     x, y = (1, 1)                                       # 初期値 運動方向の反転無し
     if ball.rect.left < screen.rect.left or\
          screen.rect.right  < ball.rect.right : x = -1  # ボールが画面の左外 or 右外のとき x方向の反射
-    if ball.rect.top  < screen.rect.top or\
-         screen.rect.bottom < ball.rect.bottom: y = -1  # ボールが画面の上 or 下のとき y方向の反射
+    #if ball.rect.top  < screen.rect.top or\
+    #    screen.rect.bottom < ball.rect.bottom: y = -1  # ボールが画面の上 or 下のとき y方向の反射
     reflection = (x, y)
     return reflection                                   # 反射の有無を返す
 
@@ -129,7 +129,7 @@ def check_ball_screen(ball, screen):
 def check_ball_bar(ball, bar):
     reflection = (1, 1)                              # 初期値 運動方向の反転無し
     if ball.rect.bottom < bar.rect.centery and\
-         ball.rect.colliderect(bar.rect) == True:    # ボールがバーより低い and 衝突していたら
+         ball.rect.colliderect(bar.rect) :    # ボールがバーより低い and 衝突していたら
         reflection = (1,-1)                          # 運動方向の変更はy方向のみ
         if bar.rect.centerx < ball.rect.centerx < bar.rect.right:
             ball.vx += 1
@@ -149,9 +149,9 @@ def check_ball_block(ball, block):
             # block.rect_list 　= [ [rect(01),rect(02),…], [rect(11),rect(12),…], … ]
             # x_block_rect_list =   [rect(y1),rect(y2),…]
             # block_rect      　=    rect(yx)
-            try :
+            try :#if block_rect == 0:continue
                 # block_rectが「0」の場合がありrect型ではないため、その時にTypeErrorが発生する
-                if ball.rect.colliderect(block_rect) == True :  # ボールとあるブロックが衝突していたら
+                if ball.rect.colliderect(block_rect) : # ボールとあるブロックが衝突していたら
                     block.list[y][x] = 0                        # そのブロックに対応するblock.listの値を0に変更
                     block.rect_list[y][x] = 0                   # そのブロックのrectの情報をblock.rect_listから消す
                     reflection = (-1,-1)                        # 運動方向を反転させる
