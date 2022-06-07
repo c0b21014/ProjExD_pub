@@ -56,7 +56,6 @@ class Bar():
         for key, delta in Bar.KEY_DELTA.items():
             if key_states[key] :
                 self.rect.centerx += delta[0]
-                self.rect.centery += delta[1]
         screen.surface.blit(self.surface, self.rect)  # 画面用surfaceに棒のsurfaceを貼り付ける
 
 
@@ -119,8 +118,7 @@ def check_ball_screen(ball, screen):
     x, y = (1, 1)                                       # 初期値 運動方向の反転無し
     if ball.rect.left < screen.rect.left or\
          screen.rect.right  < ball.rect.right : x = -1  # ボールが画面の左外 or 右外のとき x方向の反射
-    #if ball.rect.top  < screen.rect.top or\
-    #    screen.rect.bottom < ball.rect.bottom: y = -1  # ボールが画面の上 or 下のとき y方向の反射
+    if ball.rect.top  < screen.rect.top : y = -1  # ボールが画面の上 or 下のとき y方向の反射
     reflection = (x, y)
     return reflection                                   # 反射の有無を返す
 
@@ -129,7 +127,7 @@ def check_ball_screen(ball, screen):
 def check_ball_bar(ball, bar):
     reflection = (1, 1)                              # 初期値 運動方向の反転無し
     if ball.rect.bottom < bar.rect.centery and\
-         ball.rect.colliderect(bar.rect) :    # ボールがバーより低い and 衝突していたら
+         ball.rect.colliderect(bar.rect):    # ボールがバーより低い and 衝突していたら
         reflection = (1,-1)                          # 運動方向の変更はy方向のみ
         if bar.rect.centerx < ball.rect.centerx < bar.rect.right:
             ball.vx += 1
