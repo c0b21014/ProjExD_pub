@@ -28,6 +28,10 @@ class Screen:
 
 """ 棒作成のクラス """
 class Bar():
+       #棒の左右移動用辞書[黒杉]
+    key_delta = {pg.K_LEFT : [-1, 0],
+                 pg.K_RIGHT: [+1, 0],
+                }
 
     """ 初期化メソッド """
     def __init__(self, sc_w, sc_h):
@@ -42,10 +46,11 @@ class Bar():
     def draw(self, screen):
         # screen：Screenクラスのオブジェクト
         key_states = pg.key.get_pressed()             # keyの情報の辞書を作成(keyが押されているとき値がTrue)
-        if key_states[pg.K_RIGHT] == True:            #「→」キーが押されたとき
-            self.rect.centerx += 2                    # 棒を”２”だけ右に動かす
-        if key_states[pg.K_LEFT] == True:             #「←」キーが押されたとき
-            self.rect.centerx -= 2                    # 棒を”２”だけ左に動かす
+        #辞書を利用した棒移動[黒杉]
+        for key, delta in Bar.key_delta.items():
+            if key_states[key] == True:
+                self.rect.centerx += delta[0]
+                self.rect.centery += delta[1]
         screen.surface.blit(self.surface, self.rect)  # 画面用surfaceに棒のsurfaceを貼り付ける
 
 
@@ -94,16 +99,16 @@ class Ball():
     def draw(self, screen, bar, block):
         #screen：Screenクラスのオブジェクト bar：Barクラスのオブジェクト block：Blockクラスのオブジェクト
         self.rect.move_ip(self.vx, self.vy)           # ボールのrectをvx, vyだけ動かす
-        x1, y1 = check_bound(self, screen)            # 画面端での跳ね返りの判定
+        x1, y1 = check_ball_screen(self, screen)      # 画面端での跳ね返りの判定
         x2, y2 = check_ball_bar(self, bar)            # 棒での跳ね返りの判定
-        x3, y3 = collition(self, block)               # ブロックとの衝突・跳ね返りの判定
+        x3, y3 = check_ball_block(self, block)        # ブロックとの衝突・跳ね返りの判定
         self.vx *= x1 * x2 * x3                       # x方向の跳ね返り
         self.vy *= y1 * y2 * y3                       # y方向の跳ね返り
         screen.surface.blit(self.surface, self.rect)  # 画面用surfaceにボールsurfaceを貼り付ける
 
 
 """ボールと壁の衝突判定関数"""
-def check_bound(ball, screen): 
+def check_ball_screen(ball, screen): 
     # screen：Screenクラスのオブジェクト　ball：Ballクラスのオブジェクト
     x, y = (1, 1)                                       # 初期値 運動方向の反転無し
     if ball.rect.left < screen.rect.left or\
@@ -128,7 +133,7 @@ def check_ball_bar(ball, bar):
 
 
 """ ボールとブロックの当たり判定関数"""
-def collition(ball, block):
+def check_ball_block(ball, block):
     # ball：Ballクラスのオブジェクト　block：Blockクラスのオブジェクト            
     reflection = (1,1) # 初期値 運動方向の反転無し
     for y, x_block_rect_list in enumerate(block.rect_list):
